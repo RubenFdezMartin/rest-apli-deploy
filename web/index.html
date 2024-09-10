@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Probar API Rest</title>
+        <style>
+            article {
+                border: 1px solid #ccc;
+                padding: 1em;
+                margin-bottom: 1rem;
+            }
+            img {
+                height: auto;
+                width: 320px;
+                max-width: 100%;
+            }
+        </style>
+        <script type="module">
+            fetch('http://localhost:1234/movies')
+            .then(res => res.json())
+            .then(movies => {
+                const html = movies.map(movie => {
+                    return `
+                      <article data-id="${movie.id}">
+                        <h2>${movie.title}</h2>
+                        <img src="${movie.poster}" alt="${movie.title}">
+                        <p>${movie.year}</p>
+                        <button> Eliminar </button>
+                      </article>
+                    `;
+                }).join('');
+                document.querySelector('main').innerHTML = html;
+
+                document.addEventListener('click', e => { // escucho todos los clicks del documento
+                    if (e.target.matches('button')){ // y si estoy haciendo click a un boton
+                        const article = e.target.closest('article') // lo que miro es el articulo que esta mas cerca
+                        const id = article.dataset.id // para recuperar el id del dataset
+
+                        fetch (`http://localhost:1234/movies/${id}`, { // y hago un fetch para borrar esa pelicula
+                            method: 'DELETE'
+                        })
+                        .then(res => {
+                            if (res.ok) { // Si la respuesta tiene un estado de 200 a 299
+                                article.remove()
+                            }
+                        })
+                    }
+                })
+            })
+        </script>
+    </head>
+    <body>
+        <main></main> <!-- Asegúrate de tener un <main> en tu HTML -->
+    </body>
+</html>

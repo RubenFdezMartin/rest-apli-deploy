@@ -1,0 +1,47 @@
+### Ruta Principal
+GET  http://localhost:1234
+
+### recuperar todas las peliculas
+GET  http://localhost:1234/movies/
+
+### recuperar todas las peliculas por un genero usando queryParam (por id)
+GET  http://localhost:1234/movies/?id=dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+
+### recuperar todas las peliculas por un genero usando queryParam (por genre)
+GET  http://localhost:1234/movies?genre=DRAMA
+
+### recuperar todas las peliculas por id/title
+GET  http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3/The Shawshank Redemption
+
+### Crear una pelicula con POST
+POST http://localhost:1234/movies
+Content-Type: application/json
+
+{
+  "title": "The Godfather",
+  "year": 1975,
+  "director": "Francis Ford Coppola",
+  "duration": 175,
+  "poster": "https://img.fruugo.com/product/4/49/14441494_max.jpg",
+  "genre": ["Thriller", "Drama"],
+  "rate": 9.3
+}
+
+### Actualizar una pelicula
+PATCH http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
+Content-Type: application/json
+
+{
+  "title": "The Shawshank Redemption Modf",
+  "year": 1998
+}
+
+### IMPORTANTE: La diferencia entre POST, PUT Y PATCH
+### IDEMPOTENCIA: Propiedad de realizar una accion determinada varias veces y aun asi 
+### conseguir siempre el mismo resultado que se obtendria al hacerlo una vez.
+// ------------------------------------------------- //
+### POST:  Crear un nuevo elemento/recurso en el servidor (Ruta: /movies -- NO es idempotente xq creas siempre un nuevo recurso)
+### PUT:   Actualizar totalmente un elemento ya existente o crearlo si no existe (Ruta: /movies/123-456 -- SI es idempotente porque el resultado siempre será el mismo)
+### PATCH: Actualizar parcialmente un elemento o recurso (Ruta: /movies/123-456 -- Normalmente SI es idempotente pero depende, ejemplo: si tubiera un updateAt se actualizaria siempre que se haga una actualizacion)
+
+
